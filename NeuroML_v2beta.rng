@@ -197,7 +197,7 @@
             <rng:ref name="Standalone"/>
 
                 
-                
+
                     <rng:zeroOrMore><rng:element name="include"><rng:ref name="IncludeType"/></rng:element></rng:zeroOrMore>
 
                     <rng:zeroOrMore><rng:element name="extracellularProperties"><rng:ref name="ExtracellularProperties"/></rng:element></rng:zeroOrMore>
@@ -210,16 +210,16 @@
                     <rng:ref name="ConcentrationModelTypes"/>
 
                     <rng:ref name="SynapseTypes"/>
-                    
+
 
                     <rng:zeroOrMore><rng:element name="biophysicalProperties"><rng:ref name="BiophysicalProperties"/></rng:element></rng:zeroOrMore>
 
                     <rng:ref name="CellTypes"/>
-                    
+
                     <rng:ref name="PyNNCellTypes"/>
-                    
+
                     <rng:ref name="PyNNSynapseTypes"/>
-                    
+
                     <rng:ref name="PyNNInputTypes"/>
 
                     <rng:zeroOrMore><rng:element name="pulseGenerator"><rng:ref name="PulseGenerator"/></rng:element></rng:zeroOrMore>
@@ -236,7 +236,7 @@
 
     </rng:define>
 
-    <!-- A small subset of XLInclude from: http://www.w3.org/2001/XInclude.xsd  
+    <!-- A small subset of XLInclude from: http://www.w3.org/2001/XInclude.xsd
          Will be sufficient for now... -->
     <rng:define name="IncludeType">
         <rng:optional><rng:attribute name="href"><rng:data type="anyURI"/></rng:attribute></rng:optional>
@@ -255,8 +255,8 @@
             <rng:zeroOrMore><rng:element name="adExIaFCell"><rng:ref name="AdExIaFCell"/></rng:element></rng:zeroOrMore>
         
     </rng:define>
-    
-    
+
+
     <rng:define name="PyNNCellTypes">
         <a:documentation>
             Various types of cells which are defined in NeuroML 2 based on PyNN standard cell models. 
@@ -269,7 +269,7 @@
             <rng:zeroOrMore><rng:element name="EIF_cond_exp_isfa_ista"><rng:ref name="EIF_cond_exp_isfa_ista"/></rng:element></rng:zeroOrMore>
             <rng:zeroOrMore><rng:element name="EIF_cond_alpha_isfa_ista"><rng:ref name="EIF_cond_alpha_isfa_ista"/></rng:element></rng:zeroOrMore>
             <rng:zeroOrMore><rng:element name="HH_cond_exp"><rng:ref name="HH_cond_exp"/></rng:element></rng:zeroOrMore>
-            
+
         
     </rng:define>
 
@@ -283,10 +283,11 @@
             <rng:zeroOrMore><rng:element name="expOneSynapse"><rng:ref name="ExpOneSynapse"/></rng:element></rng:zeroOrMore>
             <rng:zeroOrMore><rng:element name="expTwoSynapse"><rng:ref name="ExpTwoSynapse"/></rng:element></rng:zeroOrMore>
             <rng:zeroOrMore><rng:element name="nmdaSynapse"><rng:ref name="NmdaSynapse"/></rng:element></rng:zeroOrMore>
-            <rng:zeroOrMore><rng:element name="stpSynapse"><rng:ref name="StpSynapse"/></rng:element></rng:zeroOrMore>
+            <rng:zeroOrMore><rng:element name="plasticSynapse"><rng:ref name="PlasticSynapse"/></rng:element></rng:zeroOrMore>
+	    <rng:zeroOrMore><rng:element name="blockPlasticSynapse"><rng:ref name="BlockPlasticSynapse"/></rng:element></rng:zeroOrMore>
         
     </rng:define>
-    
+
     <rng:define name="PyNNSynapseTypes">
         <a:documentation>
             Various types of synapse which are defined in NeuroML 2 based on PyNN standard cell/synapse models. 
@@ -298,8 +299,8 @@
             <rng:zeroOrMore><rng:element name="alphaCurrSynapse"><rng:ref name="AlphaCurrSynapse"/></rng:element></rng:zeroOrMore>
         
     </rng:define>
-    
-    
+
+
     <rng:define name="PyNNInputTypes">
         <a:documentation>
             Various types of input which are defined in NeuroML 2 based on PyNN standard cell/synapse models. 
@@ -375,7 +376,7 @@
                 <rng:optional><rng:attribute name="type"><rng:ref name="gateTypes"/></rng:attribute></rng:optional>
             
         
-    </rng:define>    
+    </rng:define>
 
     <rng:define name="GateHHRates">
         
@@ -385,7 +386,7 @@
                 <rng:optional><rng:attribute name="type"><rng:ref name="gateTypes"/></rng:attribute></rng:optional>
             
         
-    </rng:define>    
+    </rng:define>
 
 
     <rng:define name="GateHHTauInf">
@@ -397,7 +398,7 @@
             
         
     </rng:define>
-    
+
     <rng:define name="GateHHRatesTau">
         
             <rng:ref name="Base"/>
@@ -407,7 +408,7 @@
             
         
     </rng:define>
-    
+
     <rng:define name="GateHHRatesInf">
         
             <rng:ref name="Base"/>
@@ -502,8 +503,8 @@
             
         
     </rng:define>
-    
-    
+
+
     <rng:define name="ExpOneSynapse">
 
         
@@ -514,8 +515,8 @@
             
         
     </rng:define>
-    
-    
+
+
     <rng:define name="ExpTwoSynapse">
 
         
@@ -527,8 +528,8 @@
             
         
     </rng:define>
-    
-    
+
+
     <rng:define name="NmdaSynapse">
 
         
@@ -540,20 +541,28 @@
             
         
     </rng:define>
-    
-    <rng:define name="StpSynapse">
 
+
+    <rng:define name="PlasticSynapse">
         
             <rng:ref name="ExpTwoSynapse"/>
                 
-                    <rng:element name="stpMechanism"><rng:ref name="StpMechanism"/></rng:element>
-                
-
+                    <rng:element name="plasticityMechanism"><rng:ref name="PlasticityMechanism"/></rng:element>
+		
             
         
     </rng:define>
-    
-   
+
+    <rng:define name="BlockPlasticSynapse">
+        
+            <rng:ref name="PlasticSynapse"/>
+	      
+		<rng:element name="blockMechanism"><rng:ref name="VoltageConcDepBlock"/></rng:element>
+	      
+            
+        
+    </rng:define>
+
 
     <rng:define name="VoltageConcDepBlock">
         <rng:optional><rng:attribute name="type"><rng:data type="string"/></rng:attribute></rng:optional>
@@ -562,14 +571,20 @@
         <rng:attribute name="scalingConc"><rng:ref name="Nml2Quantity_concentration"/></rng:attribute>
         <rng:attribute name="scalingVolt"><rng:ref name="Nml2Quantity_voltage"/></rng:attribute>
     </rng:define>
-    
-    <rng:define name="StpMechanism">
-        <rng:attribute name="initReleaseProb"><rng:ref name="ZeroToOne"/></rng:attribute>
-        <rng:attribute name="tauFac"><rng:ref name="Nml2Quantity_time"/></rng:attribute>
-        <rng:attribute name="tauRec"><rng:ref name="Nml2Quantity_time"/></rng:attribute>
+
+    <rng:define name="PlasticityTypes">
+        <rng:choice>
+            <rng:value>tsodyksMarkramDepMechanism</rng:value>
+            <rng:value>tsodyksMarkramDepFacMechanism</rng:value>
+        </rng:choice>
     </rng:define>
 
-
+    <rng:define name="PlasticityMechanism">
+      <rng:attribute name="type"><rng:ref name="PlasticityTypes"/></rng:attribute>
+      <rng:attribute name="initReleaseProb"><rng:ref name="ZeroToOne"/></rng:attribute>
+      <rng:attribute name="tauRec"><rng:ref name="Nml2Quantity_time"/></rng:attribute>
+      <rng:optional><rng:attribute name="tauFac"><rng:ref name="Nml2Quantity_time"/></rng:attribute></rng:optional>
+    </rng:define>
 
     <!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
     <!--      Cell element                                     -->
@@ -579,7 +594,6 @@
 
         
             <rng:ref name="Standalone"/>
-
             
         
     </rng:define>
@@ -789,25 +803,25 @@
     <rng:define name="Member">
         <rng:attribute name="segment"><rng:ref name="SegmentId"/></rng:attribute>
     </rng:define>
-    
+
     <rng:define name="Include">
         <rng:attribute name="segmentGroup"><rng:ref name="NmlId"/></rng:attribute>
     </rng:define>
-    
+
     <rng:define name="Path">
         
             <rng:optional><rng:element name="from"><rng:ref name="SegmentEndPoint"/></rng:element></rng:optional>
             <rng:optional><rng:element name="to"><rng:ref name="SegmentEndPoint"/></rng:element></rng:optional>
         
     </rng:define>
-    
+
     <rng:define name="SubTree">
         <rng:choice>
             <rng:optional><rng:element name="from"><rng:ref name="SegmentEndPoint"/></rng:element></rng:optional>
             <rng:optional><rng:element name="to"><rng:ref name="SegmentEndPoint"/></rng:element></rng:optional>
         </rng:choice>
     </rng:define>
-    
+
     <rng:define name="SegmentEndPoint">
         <rng:attribute name="segment"><rng:ref name="SegmentId"/></rng:attribute>
     </rng:define>
@@ -849,9 +863,9 @@
             <rng:zeroOrMore><rng:element name="specificCapacitance"><rng:ref name="ValueAcrossSegOrSegGroup"/></rng:element></rng:zeroOrMore>
 
             <rng:zeroOrMore><rng:element name="initMembPotential"><rng:ref name="ValueAcrossSegOrSegGroup"/></rng:element></rng:zeroOrMore>
-            
+
             <rng:zeroOrMore><rng:element name="reversalPotential"><rng:ref name="ReversalPotential"/></rng:element></rng:zeroOrMore>
-            
+
         
 
     </rng:define>
@@ -893,7 +907,7 @@
 
         
             <rng:ref name="Base"/>
-                    
+
                 
                     <rng:zeroOrMore><rng:element name="variableParameter"><rng:ref name="VariableParameter"/></rng:element></rng:zeroOrMore>
                 
@@ -902,7 +916,7 @@
                 <rng:optional><rng:attribute name="condDensity"><rng:ref name="Nml2Quantity_conductanceDensity"/></rng:attribute></rng:optional>
 
                 <rng:optional><rng:attribute name="erev"><rng:ref name="Nml2Quantity_voltage"/></rng:attribute></rng:optional>
-                
+
                 <!-- Note: only one of the following should be used!! -->
                 <rng:optional><rng:attribute xmlns:ns_1="http://relaxng.org/ns/compatibility/annotations/1.0" name="segmentGroup" ns_1:defaultValue="all"><rng:ref name="NmlId"/></rng:attribute></rng:optional>
 
@@ -912,7 +926,7 @@
                     <a:documentation>
                         Specifying the ion here again is redundant, this will be set in ionChannel. It is added here
                         TEMPORARILY as selecting all ca or na conducting channel populations/densities in a cell would be difficult otherwise.
-                        It should be removed in the longer term, due to possible inconsistencies in this value and that in the ionChannel 
+                        It should be removed in the longer term, due to possible inconsistencies in this value and that in the ionChannel
                         element. TODO: remove.
                         
                     </a:documentation>
@@ -920,7 +934,7 @@
 
             
         
-        
+
     </rng:define>
 
     <rng:define name="ValueAcrossSegOrSegGroup">
@@ -980,7 +994,7 @@
 
                 <rng:attribute name="initialConcentration"><rng:ref name="Nml2Quantity_concentration"/></rng:attribute>
                 <rng:attribute name="initialExtConcentration"><rng:ref name="Nml2Quantity_concentration"/></rng:attribute>
-                
+
             
         
 
@@ -1092,7 +1106,7 @@
                     <rng:zeroOrMore><rng:element name="extracellularProperties"><rng:ref name="ExtracellularPropertiesLocal"/></rng:element></rng:zeroOrMore>
                     <rng:oneOrMore><rng:element name="population"><rng:ref name="Population"/></rng:element></rng:oneOrMore>
                     <rng:zeroOrMore><rng:element name="cellSet"><rng:ref name="CellSet"/></rng:element></rng:zeroOrMore>
-                        
+
                     <rng:zeroOrMore><rng:element name="synapticConnection"><rng:ref name="SynapticConnection"/></rng:element></rng:zeroOrMore> <!--Will be updated in line with LEMS ComponentType definitions -->
                     <rng:zeroOrMore><rng:element name="projection"><rng:ref name="Projection"/></rng:element></rng:zeroOrMore> <!--Will be updated in line with LEMS ComponentType definitions -->
 
@@ -1330,7 +1344,7 @@
     <!--      PyNN standard cell & synapse definitions         -->
     <!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
 
-    
+
     <rng:define name="basePyNNCell">
 
         
@@ -1342,9 +1356,9 @@
                 <rng:optional><rng:attribute name="v_init"><rng:data type="double"/></rng:attribute></rng:optional>
             
         
-        
+
     </rng:define>
-    
+
     <rng:define name="basePyNNIaFCell">
 
         
@@ -1356,9 +1370,9 @@
                 <rng:optional><rng:attribute name="v_thresh"><rng:data type="double"/></rng:attribute></rng:optional>
             
         
-        
+
     </rng:define>
-    
+
     <rng:define name="basePyNNIaFCondCell">
 
         
@@ -1367,49 +1381,49 @@
                 <rng:optional><rng:attribute name="e_rev_I"><rng:data type="double"/></rng:attribute></rng:optional>
             
         
-        
+
     </rng:define>
-    
-    
-    
+
+
+
     <rng:define name="IF_curr_alpha">
 
         
             <rng:ref name="basePyNNIaFCell"/>
             
         
-        
+
     </rng:define>
-    
+
     <rng:define name="IF_curr_exp">
-        
+
         
             <rng:ref name="basePyNNIaFCell"/>
             
         
-        
+
     </rng:define>
-    
+
     <rng:define name="IF_cond_alpha">
-        
+
         
             <rng:ref name="basePyNNIaFCondCell"/>
             
         
-        
+
     </rng:define>
-    
+
     <rng:define name="IF_cond_exp">
-        
+
         
             <rng:ref name="basePyNNIaFCondCell"/>
             
         
-        
+
     </rng:define>
-    
+
     <rng:define name="EIF_cond_exp_isfa_ista">
-        
+
         
             <rng:ref name="basePyNNIaFCondCell"/>
                 <rng:optional><rng:attribute name="a"><rng:data type="double"/></rng:attribute></rng:optional>
@@ -1420,23 +1434,23 @@
             
         
     </rng:define>
-    
+
     <rng:define name="EIF_cond_alpha_isfa_ista">
-        
+
         
             <rng:ref name="basePyNNIaFCondCell"/>
                 <rng:optional><rng:attribute name="a"><rng:data type="double"/></rng:attribute></rng:optional>
                 <rng:optional><rng:attribute name="b"><rng:data type="double"/></rng:attribute></rng:optional>
                 <rng:optional><rng:attribute name="delta_T"><rng:data type="double"/></rng:attribute></rng:optional>
                 <rng:optional><rng:attribute name="tau_w"><rng:data type="double"/></rng:attribute></rng:optional>
-                <rng:optional><rng:attribute name="v_spike"><rng:data type="double"/></rng:attribute></rng:optional>   
+                <rng:optional><rng:attribute name="v_spike"><rng:data type="double"/></rng:attribute></rng:optional>
             
         
     </rng:define>
-    
-    
+
+
     <rng:define name="HH_cond_exp">
-        
+
         
             <rng:ref name="basePyNNCell"/>
                 <rng:optional><rng:attribute name="v_offset"><rng:data type="double"/></rng:attribute></rng:optional>
@@ -1451,8 +1465,8 @@
             
         
     </rng:define>
-    
-    
+
+
     <rng:define name="BasePynnSynapse">
 
         
@@ -1460,9 +1474,9 @@
                 <rng:optional><rng:attribute name="tau_syn"><rng:data type="double"/></rng:attribute></rng:optional>
             
         
-        
+
     </rng:define>
-    
+
     <rng:define name="ExpCondSynapse">
 
         
@@ -1470,9 +1484,9 @@
                 <rng:optional><rng:attribute name="e_rev"><rng:data type="double"/></rng:attribute></rng:optional>
             
         
-        
+
     </rng:define>
-    
+
     <rng:define name="AlphaCondSynapse">
 
         
@@ -1480,30 +1494,30 @@
                 <rng:optional><rng:attribute name="e_rev"><rng:data type="double"/></rng:attribute></rng:optional>
             
         
-        
+
     </rng:define>
-    
+
     <rng:define name="ExpCurrSynapse">
 
         
             <rng:ref name="BasePynnSynapse"/>
-                
+
             
         
-        
+
     </rng:define>
-    
+
     <rng:define name="AlphaCurrSynapse">
 
         
             <rng:ref name="BasePynnSynapse"/>
-                
+
             
         
-        
+
     </rng:define>
-    
-    
+
+
     <rng:define name="SpikeSourcePoisson">
 
         
@@ -1526,7 +1540,7 @@
         generators, e.g. generateDS.py, require superclasses to be defined after the subclasses... -->
 
     <rng:define name="Base">
-            
+
         <a:documentation>
             Anything which can have a unique id (within its parent) i.e. most elements.
         </a:documentation>
@@ -1553,7 +1567,7 @@
                 <rng:optional><rng:attribute name="name"><rng:data type="string"><a:documentation>
                         Optional human readable name of the element. Not necessarily unique; should not be used for referencing/indexing.
                     </a:documentation></rng:data></rng:attribute></rng:optional>
-                    
+
                 <rng:optional><rng:attribute name="metaid"><rng:ref name="MetaId"/></rng:attribute></rng:optional>
 
             

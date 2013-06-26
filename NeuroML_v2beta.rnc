@@ -162,7 +162,7 @@ NeuroMLDocument =
   element pulseGenerator { PulseGenerator }*,
   element network { Network }*,
   element ComponentType { ComponentType }*
-# A small subset of XLInclude from: http://www.w3.org/2001/XInclude.xsd  
+# A small subset of XLInclude from: http://www.w3.org/2001/XInclude.xsd
 # Will be sufficient for now...
 IncludeType = attribute href { xsd:anyURI }?
 
@@ -196,7 +196,8 @@ SynapseTypes =
   element expOneSynapse { ExpOneSynapse }*,
   element expTwoSynapse { ExpTwoSynapse }*,
   element nmdaSynapse { NmdaSynapse }*,
-  element stpSynapse { StpSynapse }*
+  element plasticSynapse { PlasticSynapse }*,
+  element blockPlasticSynapse { BlockPlasticSynapse }*
 
 ## 
 ##             Various types of synapse which are defined in NeuroML 2 based on PyNN standard cell/synapse models. 
@@ -352,19 +353,25 @@ ExpTwoSynapse =
 NmdaSynapse =
   ExpTwoSynapse,
   element voltageConcDepBlock { VoltageConcDepBlock }
-StpSynapse =
+PlasticSynapse =
   ExpTwoSynapse,
-  element stpMechanism { StpMechanism }
+  element plasticityMechanism { PlasticityMechanism }
+BlockPlasticSynapse =
+  PlasticSynapse,
+  element blockMechanism { VoltageConcDepBlock }
 VoltageConcDepBlock =
   attribute type { xsd:string }?,
   attribute species { NmlId },
   attribute blockConcentration { Nml2Quantity_concentration },
   attribute scalingConc { Nml2Quantity_concentration },
   attribute scalingVolt { Nml2Quantity_voltage }
-StpMechanism =
+PlasticityTypes =
+  "tsodyksMarkramDepMechanism" | "tsodyksMarkramDepFacMechanism"
+PlasticityMechanism =
+  attribute type { PlasticityTypes },
   attribute initReleaseProb { ZeroToOne },
-  attribute tauFac { Nml2Quantity_time },
-  attribute tauRec { Nml2Quantity_time }
+  attribute tauRec { Nml2Quantity_time },
+  attribute tauFac { Nml2Quantity_time }?
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 # Cell element
@@ -559,7 +566,7 @@ ChannelDensity =
          "\x{a}" ~
          "                        Specifying the ion here again is redundant, this will be set in ionChannel. It is added here\x{a}" ~
          "                        TEMPORARILY as selecting all ca or na conducting channel populations/densities in a cell would be difficult otherwise.\x{a}" ~
-         "                        It should be removed in the longer term, due to possible inconsistencies in this value and that in the ionChannel \x{a}" ~
+         "                        It should be removed in the longer term, due to possible inconsistencies in this value and that in the ionChannel\x{a}" ~
          "                        element. TODO: remove.\x{a}" ~
          "                        \x{a}" ~
          "                    "
