@@ -33,6 +33,10 @@ Nml2Quantity_length =
   xsd:string {
     pattern = "-?([0-9]*(\.[0-9]+)?)([eE]-?[0-9]+)?[\s]*(m|cm|um)"
   }
+Nml2Quantity_resistance =
+  xsd:string {
+    pattern = "-?([0-9]*(\.[0-9]+)?)([eE]-?[0-9]+)?[\s]*(ohm|Kohm|Mohm)"
+  }
 Nml2Quantity_conductance =
   xsd:string {
     pattern = "-?([0-9]*(\.[0-9]+)?)([eE]-?[0-9]+)?[\s]*(S|mS|uS|nS|pS)"
@@ -156,13 +160,13 @@ NeuroMLDocument =
   SynapseTypes,
   element biophysicalProperties { BiophysicalProperties }*,
   CellTypes,
+  InputTypes,
   PyNNCellTypes,
   PyNNSynapseTypes,
   PyNNInputTypes,
-  element pulseGenerator { PulseGenerator }*,
   element network { Network }*,
   element ComponentType { ComponentType }*
-# A small subset of XLInclude from: http://www.w3.org/2001/XInclude.xsd  
+# A small subset of XLInclude from: http://www.w3.org/2001/XInclude.xsd
 # Will be sufficient for now...
 IncludeType = attribute href { xsd:anyURI }?
 
@@ -173,7 +177,9 @@ CellTypes =
   element cell { Cell }*,
   element baseCell { BaseCell }*,
   element iafTauCell { IaFTauCell }*,
+  element iafTauRefCell { IaFTauRefCell }*,
   element iafCell { IaFCell }*,
+  element iafRefCell { IaFRefCell }*,
   element izhikevichCell { IzhikevichCell }*,
   element adExIaFCell { AdExIaFCell }*
 
@@ -195,8 +201,7 @@ PyNNCellTypes =
 SynapseTypes =
   element expOneSynapse { ExpOneSynapse }*,
   element expTwoSynapse { ExpTwoSynapse }*,
-  element nmdaSynapse { NmdaSynapse }*,
-  element stpSynapse { StpSynapse }*
+  element blockingPlasticSynapse { BlockingPlasticSynapse }*
 
 ## 
 ##             Various types of synapse which are defined in NeuroML 2 based on PyNN standard cell/synapse models. 
@@ -206,6 +211,22 @@ PyNNSynapseTypes =
   element alphaCondSynapse { AlphaCondSynapse }*,
   element expCurrSynapse { ExpCurrSynapse }*,
   element alphaCurrSynapse { AlphaCurrSynapse }*
+
+## 
+##	
+##	  Various types of inputs which are defined in NeuroML2. This
+##	  list will be expanded...
+##	
+##       
+InputTypes =
+  element pulseGenerator { PulseGenerator }*,
+  element sineGenerator { SineGenerator }*,
+  element rampGenerator { RampGenerator }*,
+  element voltageClamp { VoltageClamp }*,
+  element spikeArray { SpikeArray }*,
+  element spikeGenerator { SpikeGenerator }*,
+  element spikeGeneratorRandom { SpikeGeneratorRandom }*,
+  element spikeGeneratorPoisson { SpikeGeneratorPoisson }*
 
 ## 
 ##             Various types of input which are defined in NeuroML 2 based on PyNN standard cell/synapse models. 
@@ -349,22 +370,24 @@ ExpTwoSynapse =
   BaseConductanceBasedSynapse,
   attribute tauDecay { Nml2Quantity_time },
   attribute tauRise { Nml2Quantity_time }
-NmdaSynapse =
+BlockingPlasticSynapse =
   ExpTwoSynapse,
-  element voltageConcDepBlock { VoltageConcDepBlock }
-StpSynapse =
-  ExpTwoSynapse,
-  element stpMechanism { StpMechanism }
-VoltageConcDepBlock =
-  attribute type { xsd:string }?,
+  element plasticityMechanism { PlasticityMechanism }?,
+  element blockMechanism { BlockMechanism }?
+BlockTypes = "voltageConcDepBlockMechanism"
+BlockMechanism =
+  attribute type { BlockTypes },
   attribute species { NmlId },
   attribute blockConcentration { Nml2Quantity_concentration },
   attribute scalingConc { Nml2Quantity_concentration },
   attribute scalingVolt { Nml2Quantity_voltage }
-StpMechanism =
+PlasticityTypes =
+  "tsodyksMarkramDepMechanism" | "tsodyksMarkramDepFacMechanism"
+PlasticityMechanism =
+  attribute type { PlasticityTypes },
   attribute initReleaseProb { ZeroToOne },
-  attribute tauFac { Nml2Quantity_time },
-  attribute tauRec { Nml2Quantity_time }
+  attribute tauRec { Nml2Quantity_time },
+  attribute tauFac { Nml2Quantity_time }?
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 # Cell element
@@ -377,6 +400,9 @@ IaFTauCell =
   attribute thresh { Nml2Quantity_voltage },
   attribute reset { Nml2Quantity_voltage },
   attribute tau { Nml2Quantity_time }
+IaFTauRefCell =
+  IaFTauCell,
+  attribute refract { Nml2Quantity_time }
 IaFCell =
   BaseCell,
   attribute leakReversal { Nml2Quantity_voltage },
@@ -384,6 +410,9 @@ IaFCell =
   attribute reset { Nml2Quantity_voltage },
   attribute C { Nml2Quantity_capacitance },
   attribute leakConductance { Nml2Quantity_conductance }
+IaFRefCell =
+  IaFCell,
+  attribute refract { Nml2Quantity_time }
 IzhikevichCell =
   BaseCell,
   attribute v0 { Nml2Quantity_voltage },
@@ -559,7 +588,7 @@ ChannelDensity =
          "\x{a}" ~
          "                        Specifying the ion here again is redundant, this will be set in ionChannel. It is added here\x{a}" ~
          "                        TEMPORARILY as selecting all ca or na conducting channel populations/densities in a cell would be difficult otherwise.\x{a}" ~
-         "                        It should be removed in the longer term, due to possible inconsistencies in this value and that in the ionChannel \x{a}" ~
+         "                        It should be removed in the longer term, due to possible inconsistencies in this value and that in the ionChannel\x{a}" ~
          "                        element. TODO: remove.\x{a}" ~
          "                        \x{a}" ~
          "                    "
@@ -637,6 +666,42 @@ PulseGenerator =
   attribute delay { Nml2Quantity_time },
   attribute duration { Nml2Quantity_time },
   attribute amplitude { Nml2Quantity_current }
+SineGenerator =
+  Standalone,
+  attribute delay { Nml2Quantity_time },
+  attribute phase { Nml2Quantity_none },
+  attribute duration { Nml2Quantity_time },
+  attribute amplitude { Nml2Quantity_current },
+  attribute period { Nml2Quantity_time }
+RampGenerator =
+  Standalone,
+  attribute delay { Nml2Quantity_time },
+  attribute duration { Nml2Quantity_time },
+  attribute startAmplitude { Nml2Quantity_current },
+  attribute finishAmplitude { Nml2Quantity_current },
+  attribute baselineAmplitude { Nml2Quantity_current }
+VoltageClamp =
+  Standalone,
+  attribute delay { Nml2Quantity_time },
+  attribute duration { Nml2Quantity_time },
+  attribute targetVoltage { Nml2Quantity_voltage },
+  attribute seriesResistance { Nml2Quantity_resistance }
+Spike =
+  Standalone,
+  attribute time { Nml2Quantity_time }
+SpikeArray =
+  Standalone,
+  element spike { Spike }*
+SpikeGenerator =
+  Standalone,
+  attribute period { Nml2Quantity_time }
+SpikeGeneratorRandom =
+  Standalone,
+  attribute maxISI { Nml2Quantity_time },
+  attribute minISI { Nml2Quantity_time }
+SpikeGeneratorPoisson =
+  Standalone,
+  attribute averageRate { Nml2Quantity_pertime }
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 # Networks
